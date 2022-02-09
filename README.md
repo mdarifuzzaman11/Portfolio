@@ -1,8 +1,8 @@
-# Md_Arifuzzaman_Original_Portfolio
+# Md_Arifuzzaman_Portfolio
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/mdarifuzzaman11/nextjs-crypto-price-tracker-app?style=for-the-badge) 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/mdarifuzzaman11/Md_Arifuzzaman_Portfolio?style=for-the-badge) 
 ![APM](https://img.shields.io/apm/l/test?style=for-the-badge)
-![GitHub repo size](https://img.shields.io/github/repo-size/mdarifuzzaman11/nextjs-crypto-price-tracker-app?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/mdarifuzzaman11/Md_Arifuzzaman_Portfolio?style=for-the-badge)
 ![GitHub followers](https://img.shields.io/github/followers/mdarifuzzaman11?style=for-the-badge)
 
 
@@ -13,7 +13,7 @@
 
 ## Description
 
-Responsive Personal Portfolio Website Using HTML CSS And JavaScript | Dark/Light Mode. Creating This portfolio will give you exposure to Html, CSS(Grid, Flexbox), Variables Css, JavaScript DOM, Responsive Web Design 
+Responsive Personal Portfolio Website Using HTML CSS And JavaScript | Dark/Light Mode. Creating This portfolio will give you exposure to Html, CSS(Grid, Flexbox), Variables Css, JavaScript DOM, Responsive Web Design
 
 
 ### Dependencies
