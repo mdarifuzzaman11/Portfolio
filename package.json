@@ -7,11 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build",
-    "deploy":"gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "keywords": [
     "website"
   ],
   "author": "Md Arifuzzaman",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "gh-pages": "^3.2.3"
+  }
 }
