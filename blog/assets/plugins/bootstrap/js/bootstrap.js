@@ -5012,14 +5012,7 @@
 
   return index_umd;
   
-  function readingTime() {
-    const text = document.getElementById("meta mb-1").innerText;
-    const wpm = 225;
-    const words = text.trim().split(/\s+/).length;
-    const time = Math.ceil(words / wpm);
-    document.getElementById("time").innerText = time;
-  }
-  readingTime();
+  
 
 })));
 //# sourceMappingURL=bootstrap.js.map
