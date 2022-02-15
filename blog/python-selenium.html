@@ -102,21 +102,43 @@
 				    <p>Code Sample </p>
 					<pre>
 					    <code>
-function $initHighlight(block, cls) {
-  try {
-    if (cls.search(/\bno\-highlight\b/) != -1)
-      return process(block, true, 0x0F) +
-             ` class="${cls}"`;
-  } catch (e) {
-    /* handle exception */
-  }
-  for (var i = 0 / 2; i < classes.length; i++) {
-    if (checkCondition(classes[i]) === undefined)
-      console.log('undefined');
-  }
-}
-
-export  $initHighlight;
+							def _path_matcher(self, patterns: Iterable[str]) -> Callable[[Path], bool]:
+							"""Produce a function that matches against specified patterns."""
+							# TODO Is normalization really needed?
+							normalized_patterns = (normalize("NFD", pattern) for pattern in patterns)
+							spec = pathspec.PathSpec.from_lines("gitwildmatch", normalized_patterns)
+							return spec.match_file
+					
+						def _solve_render_conflict(self, dst_relpath: Path):
+							"""Properly solve render conflicts.
+							It can ask the user if running in interactive mode.
+							"""
+							assert not dst_relpath.is_absolute()
+							printf(
+								"conflict",
+								dst_relpath,
+								style=Style.DANGER,
+								quiet=self.quiet,
+								file_=sys.stderr,
+							)
+							if self.match_skip(dst_relpath):
+								printf(
+									"skip",
+									dst_relpath,
+									style=Style.OK,
+									quiet=self.quiet,
+									file_=sys.stderr,
+								)
+								return False
+							if self.overwrite or dst_relpath == self.answers_relpath:
+								printf(
+									"overwrite",
+									dst_relpath,
+									style=Style.WARNING,
+									quiet=self.quiet,
+									file_=sys.stderr,
+								)
+								return True
 					    </code> </pre>
 				    <h3 class="mt-5 mb-3">Python + Selenium </h3>
 				    <p>Python language is utilized with Selenium for testing. It has definitely less verbose and simple
