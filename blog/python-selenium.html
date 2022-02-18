@@ -39,7 +39,7 @@
 				<div class="profile-section pt-3 pt-lg-0">
 				    <img class="profile-image mb-3 rounded-circle mx-auto" src="/assets/img/profile.png" alt="Md" >			
 					
-					<div class="bio mb-3">Hi, my name is Md Arifuzzaman. I have High level experience in web design and development knowledge, 
+					<div class="bio mb-3">Hi, my name is Md Arifuzzaman, with High level experience in web design and development knowledge, 
 						producing quality work, and testing every website, software that live on the internet, whether that be websites, 
 						applications, or anything in between.<br><a href="about.html">Find out more about me</a></div><!--//bio-->
 
@@ -99,20 +99,114 @@
 					</p>
 				    
 				    <h3 class="mt-5 mb-3">Code Block Example</h3>
-				    <p>You can get more info at <a class="text-link" href="https://highlightjs.org/" target="_blank">https://highlightjs.org/</a>. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. </p>
-				  
-					<pre><code>
-					body {
-						font-family: sans-serif;
-						text-align: center;
-						padding: 3rem;
-						font-size: 1.125rem;
-						line-height: 1.5;
-						transition: all 725ms ease-in-out;
-						}
-												
+				    <p>Code Sample </p>
+					<pre>
+					    <code>
+							
+def _answers_to_remember(self) -> Mapping:
+        """Get only answers that will be remembered in the copier answers file."""
+        # All internal values must appear first
+        answers: AnyByStrDict = {}
+        commit = self.template.commit
+        src = self.template.url
+        for key, value in (("_commit", commit), ("_src_path", src)):
+            if value is not None:
+                answers[key] = value
+        # Other data goes next
+        answers.update(
+            (str(k), v)
+            for (k, v) in self.answers.combined.items()
+            if not k.startswith("_")
+            and k not in self.template.secret_questions
+            and isinstance(k, JSONSerializable)
+            and isinstance(v, JSONSerializable)
+        )
+        return answers
+
+    def _execute_tasks(self, tasks: Sequence[Mapping]) -> None:
+        """Run the given tasks.
+        Arguments:
+            tasks: The list of tasks to run.
+        """
+        for i, task in enumerate(tasks):
+            task_cmd = task["task"]
+            use_shell = isinstance(task_cmd, str)
+            if use_shell:
+                task_cmd = self._render_string(task_cmd)
+            else:
+                task_cmd = [self._render_string(str(part)) for part in task_cmd]
+            if not self.quiet:
+                print(
+                    colors.info
+                    | f" > Running task {i + 1} of {len(tasks)}: {task_cmd}",
+                    file=sys.stderr,
+                )
+            with local.cwd(self.subproject.local_abspath), local.env(
+                **task.get("extra_env", {})
+            ):
+                subprocess.run(task_cmd, shell=use_shell, check=True, env=local.env)
+
+    def _render_context(self) -> Mapping:
+        """Produce render context for Jinja."""
+        # Backwards compatibility
+        # FIXME Remove it?
+        conf = asdict(self)
+        conf.update(
+            {
+                "answers_file": self.answers_relpath,
+                "src_path": self.template.local_abspath,
+            }
+        )
+
+        return dict(
+            DEFAULT_DATA,
+            **self.answers.combined,
+            _copier_answers=self._answers_to_remember(),
+            _copier_conf=conf,
+            _folder_name=self.subproject.local_abspath.name,
+        )
+
+    def _path_matcher(self, patterns: Iterable[str]) -> Callable[[Path], bool]:
+        """Produce a function that matches against specified patterns."""
+        # TODO Is normalization really needed?
+        normalized_patterns = (normalize("NFD", pattern) for pattern in patterns)
+        spec = pathspec.PathSpec.from_lines("gitwildmatch", normalized_patterns)
+        return spec.match_file
+
+    def _solve_render_conflict(self, dst_relpath: Path):
+        """Properly solve render conflicts.
+        It can ask the user if running in interactive mode.
+        """
+        assert not dst_relpath.is_absolute()
+        printf(
+            "conflict",
+            dst_relpath,
+            style=Style.DANGER,
+            quiet=self.quiet,
+            file_=sys.stderr,
+        )
+        if self.match_skip(dst_relpath):
+            printf(
+                "skip",
+                dst_relpath,
+                style=Style.OK,
+                quiet=self.quiet,
+                file_=sys.stderr,
+            )
+            return False
+        if self.overwrite or dst_relpath == self.answers_relpath:
+            printf(
+                "overwrite",
+                dst_relpath,
+                style=Style.WARNING,
+                quiet=self.quiet,
+                file_=sys.stderr,
+            )
+            return True
+        return bool(ask(f" Overwrite {dst_relpath}?", default=True))
+		
 							 
-					    </code></pre>
+					    </code> </pre>
 				    <h3 class="mt-5 mb-3">Python + Selenium </h3>
 				    <p>Python language is utilized with Selenium for testing. It has definitely less verbose and simple
 						 to use than some other programming language. The Python APIs engage me to interface with the 
@@ -141,12 +235,12 @@
 					  <li class="mb-2">Jenkins CI Integration</li>
 					  <li class="mb-2">GITHUB Version control Management</li>
 					</ul>
- 
+ <!-- Hiding Quotes for now!
 					<h5 class="my-3">Quote Example:</h5>
 					<blockquote class="blockquote m-lg-5 py-3   ps-4 px-lg-5">
 						<p class="mb-2">You might not think that programmers are artists, but programming is an extremely creative profession. It's logic-based creativity.</p>
 						<footer class="blockquote-footer mt-0">John Romero</footer>
-					</blockquote>
+					</blockquote>-->
 					
 					<h5 class="my-3">Python + Selenium Project Examples:</h5>
 					<table class="table table-striped my-5">
@@ -154,8 +248,8 @@
 							<tr>
 								<th scope="col">Project #</th>
 								<th scope="col">Project Name</th>
-								<th scope="col">Project Owner</th>
-								<th scope="col">Github Files</th>
+								<th scope="col">Source Files</th>
+								 
 							</tr>
 						</thead>
 						<tbody>
@@ -163,20 +257,15 @@
 								<th scope="row">1</th>
 								<td>MD Arfuzzaman</td>
 								<td>Instagram Automation</td>
-								<td>@Linkcoming Soon</td>
+								 
 							</tr>
 							<tr>
 								<th scope="row">2</th>
 								<td>MD Arfuzzaman</td>
 								<td>Instagram Automation</td>
-								<td>@Linkcoming Soon</td>
+								 
 							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>MD Arfuzzaman</td>
-								<td>Instagram Automation</td>
-								<td>@Linkcoming Soon</td>
-							</tr>
+							 
 						</tbody>
 					</table>
 					
