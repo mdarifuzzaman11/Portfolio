@@ -166,7 +166,7 @@ const themeButton = document.getElementById('theme-button')
 const darkTheme = 'dark-theme'
 const iconTheme = 'uil-sun'
 
-// Previously selected topic (if user selected)
+// Previously selected theme (if user selected)
 const selectedTheme = localStorage.getItem('selected-theme')
 const selectedIcon = localStorage.getItem('selected-icon')
 
@@ -174,19 +174,54 @@ const selectedIcon = localStorage.getItem('selected-icon')
 const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
 const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun'
 
-// We validate if the user previously chose a topic
+// We validate if the user previously chose a theme
 if (selectedTheme) {
-  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+  // Apply the stored theme
   document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
   themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+} else {
+  // Default to dark theme if no preference is stored
+  document.body.classList.add(darkTheme)
+  themeButton.classList.add(iconTheme)
 }
 
 // Activate / deactivate the theme manually with the button
 themeButton.addEventListener('click', () => {
-    // Add or remove the dark / icon theme
-    document.body.classList.toggle(darkTheme)
-    themeButton.classList.toggle(iconTheme)
-    // We save the theme and the current icon that the user chose
-    localStorage.setItem('selected-theme', getCurrentTheme())
-    localStorage.setItem('selected-icon', getCurrentIcon())
+  // Toggle the dark / icon theme
+  document.body.classList.toggle(darkTheme)
+  themeButton.classList.toggle(iconTheme)
+  // Save the theme and the current icon that the user chose
+  localStorage.setItem('selected-theme', getCurrentTheme())
+  localStorage.setItem('selected-icon', getCurrentIcon())
 })
+
+//New Feature Added Feb 23, 2024 
+
+// Set the start date of your experience
+const startYear = 2011; // Replace with the year you started
+const startingCompanyCount = 8; // The initial count of companies worked
+const incrementRate = 2; // The rate at which the count increases, e.g., 1 per year
+
+// Function to calculate years of experience
+function calculateExperience(startYear) {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    return currentYear - startYear;
+}
+
+// Function to update company count
+function updateCompanyCount(startingCount, incrementRate) {
+    const yearsSinceStart = new Date().getFullYear() - 2020; // Replace 2020 with the year you started counting
+    return startingCount + (yearsSinceStart * incrementRate);
+}
+
+// Consolidated window.onload function
+window.onload = function() {
+    // Update years of experience
+    document.getElementById('years-of-experience').textContent = calculateExperience(startYear) + '+';
+
+    // Update companies worked
+    document.getElementById('companies-worked').textContent = updateCompanyCount(startingCompanyCount, incrementRate) + '+';
+    
+    // Add other onload actions here if needed
+};
