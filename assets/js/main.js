@@ -198,7 +198,7 @@ themeButton.addEventListener('click', () => {
 //New Feature Added Feb 23, 2024 
 
 // Set the start date of your experience
-const startYear = 2011; // Replace with the year you started
+const startYear = 2016; // Replace with the year you started
 const startingCompanyCount = 8; // The initial count of companies worked
 const incrementRate = 2; // The rate at which the count increases, e.g., 1 per year
 
